@@ -314,6 +314,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 //Send data back
                 Intent intent = new Intent();
                 intent.putExtra("email", mEmail);
+                intent.putExtra("password", mPassword);
                 setResult(Activity.RESULT_OK, intent);
                 finish();
             } else {

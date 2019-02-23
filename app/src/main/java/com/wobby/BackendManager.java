@@ -23,6 +23,8 @@ public class BackendManager {
     private Context context;
     private View v;
     private RequestQueue queue;
+    private String username;
+    private String password;
 
     public BackendManager(Context context) {
         this.context = context;
@@ -51,7 +53,10 @@ public class BackendManager {
         this.queue.add(stringRequest);
     }
 
-    public void login () {
+    public void login (String username, String password) {
+        this.username = username;
+        this.password = password;
+
         StringRequest postRequest = new StringRequest(Request.Method.POST, uri + auth + "/login",
                 new Response.Listener<String>()
                 {
@@ -75,8 +80,8 @@ public class BackendManager {
             protected Map<String, String> getParams()
             {
                 Map<String, String>  params = new HashMap<String, String>();
-                params.put("username", "oscarsierra24");
-                params.put("password", "tepic2019");
+                params.put("username", BackendManager.this.username);
+                params.put("password", BackendManager.this.password);
 
                 return params;
             }

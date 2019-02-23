@@ -23,8 +23,14 @@ public class MainActivity extends AppCompatActivity {
     final static String uri = "https://sheltered-retreat-56384.herokuapp.com";
     private TextView tv;
     private Button b1;
+    private BackendManager bm;
+
+    private Boolean isSignedIn;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        isSignedIn = false;
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -37,13 +43,19 @@ public class MainActivity extends AppCompatActivity {
         b1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), MapsActivity.class);
-                startActivity(intent);
+                if(isSignedIn){
+                    Intent intent = new Intent(getApplicationContext(), MapsActivity.class);
+                    startActivity(intent);
+                }else{
+                    Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+                    startActivityForResult(intent, LOGIN_CODE);
+                }
+
             }
         });
 
-        BackendManager backendManager = new BackendManager(this);
-        backendManager.login();
+        bm = new BackendManager(this);
+
 
 
     }
@@ -55,6 +67,9 @@ public class MainActivity extends AppCompatActivity {
             case LOGIN_CODE:
                 if(resultCode == Activity.RESULT_OK){
                     tv.setText("Welcome back, " + data.getStringExtra("email"));
+                    bm.login(data.getStringExtra("email"), data.getStringExtra("password"));
+
+                    isSignedIn = true;
                 }
             break;
         }
